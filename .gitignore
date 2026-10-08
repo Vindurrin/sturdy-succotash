@@ -1,0 +1,65 @@
+# --- Secrets & local config (never commit) ---
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+secrets.json
+.aws/
+credentials
+.act.secrets
+
+# --- Lambda / AWS build artifacts ---
+*.zip
+.aws-sam/
+samconfig.toml
+.serverless/
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfvars
+cdk.out/
+function.zip
+layer/
+build/
+dist/
+package/
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+*.egg-info/
+
+# --- Node ---
+node_modules/
+npm-debug.log*
+yarn-error.log*
+.npm/
+.eslintcache
+coverage/
+
+# --- Logs & temp ---
+*.log
+tmp/
+.tmp/
+
+# --- Editors & OS ---
+.DS_Store
+.idea/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+*.swp
+
+# --- Claude Code (local state only) ---
+.claude/worktrees/
+.claude/settings.local.json
