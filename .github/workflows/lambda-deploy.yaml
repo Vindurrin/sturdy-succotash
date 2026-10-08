@@ -35,4 +35,4 @@ jobs:
           run: | 
             cd lambdas/
             zip -r lambdas.zip .
-            aws lambda update-function-code --function-name=my-test-cicd-lambda --zip-file fileb://lambdas.zip
+            aws lambda update-function-code --function-name=lambda-actions-test --zip-file fileb://lambdas.zip
