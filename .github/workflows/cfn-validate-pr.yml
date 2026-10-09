@@ -2,6 +2,7 @@ name: Validate CloudFormation on Pull Request
 
 on:
     pull_request:
+        types: [opened, synchronize, reopened, closed]
         paths:
             - 'cloudformation/**'
 
@@ -13,6 +14,7 @@ permissions:
 jobs:
     validate-cfn:
         runs-on: ubuntu-latest
+        if: github.event.action != 'closed'
         steps:
             - uses: actions/checkout@v4
             - name: Configure AWS Credentials
@@ -39,7 +41,7 @@ jobs:
               with: 
                 github-token: ${{ secrets.GITHUB_TOKEN }}
                 script: |
-                  github.rest.issues.createComment({
+                  await github.rest.issues.createComment({
                         issue_number: context.issue.number,
                         owner: context.repo.owner,
                         repo: context.repo.repo,
@@ -48,7 +50,7 @@ jobs:
 
     cleanup-on-merge:
         runs-on: ubuntu-latest
-        if: github.event.pull_request.merged == true
+        if: github.event.action == 'closed'
         steps: 
             - name: Configure AWS Credentials
               uses: aws-actions/configure-aws-credentials@v4
@@ -59,4 +61,5 @@ jobs:
             - name: Delete Test Stack
               run: |
                 stack_name="pr-test-stack-${{github.event.pull_request.number}}"
-                aws cloudformation delete-stack --stack-name $stack_name
+                aws cloudformation delete-stack --stack-name "$stack_name"
+                aws cloudformation wait stack-delete-complete --stack-name "$stack_name"
